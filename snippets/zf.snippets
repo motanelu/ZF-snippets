@@ -516,14 +516,14 @@ snippet snrefmap
 
 snippet setget
 	/**
-	 * Get ${1}
+	 * Get ${1:description}
 	 *
 	 * @access public
-	 * @return ${2}
+	 * @return ${2:type}
 	 */
-	public function get${3}()
+	public function get${3:UpperCaseName}()
 	{
-		return $this->_${4};	
+		return $this->_${4:fieldName};	
 	}
 
 	/**
@@ -533,9 +533,35 @@ snippet setget
 	 * @access public
 	 * @return ${5}
 	 */
-	public function set$3($4)
+	public function set$3($$4)
 	{
-		$this->_$4 = $4;
+		$this->_$4 = $$4;
 		${6:return $this;}
 	}
 	${7}
+
+snippet setoptions
+	/**
+	 * Set options
+	 *
+	 * @param array|Zend_Config $config
+	 * @return ${1}
+	 */
+	public function setOptions($config)
+	{
+		if ($config instanceof Zend_Config) {
+			$config = $config->toArray();
+		}
+
+		foreach ($config as $key => $value) {
+			$method = 'set' . ucfirst($key);
+			if (method_exists($this, $method)) {
+				$this->{$method}($value);
+			}
+		}
+
+		return $this;
+	}
+
+	${2}
+
