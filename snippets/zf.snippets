@@ -565,3 +565,49 @@ snippet setoptions
 
 	${2}
 
+snippet singleton
+	/**
+	 * Singleton object
+	 *  
+	 * @static
+	 * @var ${1:ClassName}
+	 */
+	protected static $_instance = null;
+
+	/**
+	 * Class constructor - must not be called directly
+	 * 
+	 * @access protected
+	 */
+	protected function __construct()
+	{
+
+	}
+
+	/**
+	 * __clone() implementation that prevents singleton objects cloning
+	 * 
+	 * @access public 
+	 * @return void
+	 */
+	public function __clone()
+	{
+		throw new Exception('Please do not clone singleton objects');    
+	}
+
+	/**
+	 * Returns a singleton instance of this class
+	 * 
+	 * @static
+	 * @access public
+	 * @return $1
+	 */
+	public static function getInstance()
+	{
+		if (null === self::$_instance) {
+			self::$_instance = new $1();
+		}
+
+		return self::$_instance;
+	}
+	${2}
